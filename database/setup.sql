@@ -1,4 +1,5 @@
-CREATE snacks (
+DROP TABLE IF EXISTS snacks;
+CREATE TABLE snacks (
     id INT GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(30) UNIQUE NOT NULL,
     description VARCHAR(500),
@@ -9,7 +10,7 @@ CREATE snacks (
 );
 
 INSERT INTO snacks
-    (name, description, healthy, votes)
+    (name, description, healthy, vegetarian, votes)
 VALUES
     ('Peanuts', 'Roasted & salted peanuts', TRUE, TRUE, 0),
     ('Red velvet cake', 'Cake for cowards', FALSE, FALSE, 0),
