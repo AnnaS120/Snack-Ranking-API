@@ -11,7 +11,7 @@ class Snack {
   }
 
   static async getAll() {
-    const response = await db.query("SELECT * FROM snacks ORDER BY name;");
+    const response = await db.query("SELECT * FROM snacks ORDER BY name ASC;");
 
     if (response.rows.length === 0) {
       throw new Error("No snacks available.")
