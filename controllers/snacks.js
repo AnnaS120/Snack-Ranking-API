@@ -2,7 +2,7 @@ const Snack = require("../models/Snack");
 
 async function index(req, res) {
   try {
-    const snacks = await Snack.getAll;
+    const snacks = await Snack.getAll();
     res.status(200).json(snacks);
   } catch (err) {
     res.status(500).json({ "error": err.message })
