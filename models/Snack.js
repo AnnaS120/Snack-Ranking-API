@@ -20,8 +20,9 @@ class Snack {
     return response.rows.map(g => new Snack(g));
   }
 
-  static async getTopSnack() {
-    const response = await db.query("SELECT * FROM snacks LIMIT 1 ORDER BY votes DESC;");
+  
+  static async getOneById(id) {
+    const response = await db.query("SELECT * FROM snacks WHERE id = $1;", [id]);
 
     if (response.rows.length != 1) {
       throw new Error("Unable to locate snack.")
@@ -30,8 +31,8 @@ class Snack {
     return new Snack(response.rows[0]);
   }
 
-  static async getOneById(id) {
-    const response = await db.query("SELECT * FROM snacks WHERE id = ${1};");
+  static async getTopSnack() {
+    const response = await db.query("SELECT * FROM snacks ORDER BY votes DESC LIMIT 1;");
 
     if (response.rows.length != 1) {
       throw new Error("Unable to locate snack.")
@@ -42,14 +43,14 @@ class Snack {
 
   static async create(data) {
     const { name, description, healthy = false, vegetarian = false } = data;
-    const response = await db.query('INSERT INTO snacks (name, description, healthy, vegetarian) VALUES ($1, $2, $3, $4) RETURNING *;');
+    const response = await db.query('INSERT INTO snacks (name, description, healthy, vegetarian) VALUES ($1, $2, $3, $4) RETURNING *;', [name, description, healthy, vegetarian]);
     const snackId = response.rows[0].id;
     const newSnack = await Snack.getOneById(snackId);
     return newSnack;
   }
 
   async update(data) {
-    const response = await db.query("PATCH snacks SET votes = $1 RETURNING id, votes;",
+    const response = await db.query("UPDATE snacks SET votes = $1 WHERE id = $2 RETURNING *;",
       [this.votes + parseInt(data.votes), this.id]);
 
     if (response.rows.length != 1) {
@@ -59,8 +60,8 @@ class Snack {
     return new Snack(response.rows[0]);
   }
 
-  static async destroy() {
-    const response = await db.query('DESTROY FROM snacks WHERE id = $1 RETURNING *;', [this.id]);
+  async destroy() {
+    const response = await db.query('DELETE FROM snacks WHERE id = $1 RETURNING *;', [this.id]);
 
     if (response.rows.length != 1) {
       throw new Error("Unable to delete snack.")

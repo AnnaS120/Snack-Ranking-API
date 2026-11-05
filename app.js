@@ -1,12 +1,11 @@
 const express = require('express');
 const cors = require('cors');
-const logger = require('./logger');
+
 
 const snackRouter = require('./routers/snacks');
 
 const app = express();
 app.use(cors());
-app.use(logger);
 app.use(express.json());
 
 app.use('/snacks', snackRouter);
