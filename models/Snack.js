@@ -1,3 +1,4 @@
+const db = require('../database/connect');
 class Snack {
 
   constructor({ id, name, description, healthy, vegetarian, votes }) {
