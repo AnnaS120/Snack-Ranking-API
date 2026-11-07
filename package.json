@@ -2,7 +2,7 @@
   "scripts": {
     "dev": "nodemon -L index.js",
     "setup-db": "node ./database/setup.js",
-    "start": "node index.js",
+    "start": "node index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
